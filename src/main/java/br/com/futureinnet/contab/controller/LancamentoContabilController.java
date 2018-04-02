@@ -38,14 +38,10 @@ public class LancamentoContabilController {
 	
 	@RequestMapping(value = "/", params = "contaContabil", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<LancamentoContabil>> obterTodosPorContaContabil(@RequestParam String contaContabil) throws BusinessException {
-	 
-		if (contaContabil == null ||contaContabil.isEmpty()) {
-			return new ResponseEntity<List<LancamentoContabil>>(service.obterTodos(), HttpStatus.OK);
-		} else {
-			return new ResponseEntity<List<LancamentoContabil>>(service.obterPorContaContabil(contaContabil) , HttpStatus.OK);
-		}
-	} 
 	
+		return new ResponseEntity<List<LancamentoContabil>>(service.obterPorContaContabil(contaContabil) , HttpStatus.OK);
+		
+	} 
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<LancamentoContabil> obterPorId(@PathVariable("id") UUID id) {
