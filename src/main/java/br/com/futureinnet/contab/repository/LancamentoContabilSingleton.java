@@ -51,7 +51,11 @@ public class LancamentoContabilSingleton {
     		throw new BusinessException("Não há lançamentos no sistema para coletar Estatísticas.");
     	}
     	
-    	return new ArrayList<LancamentoContabil>(syncMapContas.get(contaContabil));
+    	if (syncMapContas.get(contaContabil)!=null) { 
+    		return new ArrayList<LancamentoContabil>(syncMapContas.get(contaContabil));
+    	} else {
+    		throw new BusinessException("Conta Contábil não encontrada.");
+    	}
     }
     
     public void addToMaps(LancamentoContabil lancamento) {

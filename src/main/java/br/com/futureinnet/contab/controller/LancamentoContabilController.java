@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -29,18 +30,29 @@ public class LancamentoContabilController {
 	
 	 
 	@RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<LancamentoContabil>> obterTodos() {
-	 
+	public ResponseEntity<List<LancamentoContabil>> obterTodos() throws BusinessException {
+	  
 		return new ResponseEntity<List<LancamentoContabil>>(service.obterTodos(), HttpStatus.OK);
+		
 	} 
+	
+	@RequestMapping(value = "/", params = "contaContabil", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<LancamentoContabil>> obterTodosPorContaContabil(@RequestParam String contaContabil) throws BusinessException {
+	 
+		if (contaContabil == null ||contaContabil.isEmpty()) {
+			return new ResponseEntity<List<LancamentoContabil>>(service.obterTodos(), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<List<LancamentoContabil>>(service.obterPorContaContabil(contaContabil) , HttpStatus.OK);
+		}
+	} 
+	
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<LancamentoContabil> obterPorId(@PathVariable("id") UUID id) {
 	 
 		return new ResponseEntity<LancamentoContabil>(service.obterPorId(id), HttpStatus.OK);
 	} 
-	
-	
+   
 	@RequestMapping(value = "/estatistica/{conta}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<EstatisticaContabil> obterEstatisticaPorConta(@PathVariable("conta") String codigoConta) throws BusinessException {
 	 
